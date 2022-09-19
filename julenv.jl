@@ -37,7 +37,7 @@ Pkg.add(Pkg.PackageSpec(name="HiGHS"))
 ############################################################################################
 #Uncomment either of the following two lines for the particular version of Gurobi.jl desired
 ############################################################################################
-#Pkg.add(Pkg.PackageSpec(name="Gurobi", version="0.10.3"))
+Pkg.add(Pkg.PackageSpec(name="Gurobi", version="0.10.3"))
 #Pkg.add(Pkg.PackageSpec(name="Gurobi", version="0.9.14"))
 Pkg.add(Pkg.PackageSpec(name="CSV", version="0.8.5"))
 Pkg.add(Pkg.PackageSpec(name="Clustering", version="0.14.2"))
