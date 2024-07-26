@@ -25,6 +25,10 @@ function load_network_data!(setup::Dict, path::AbstractString, inputs_nw::Dict)
     # Transmission capacity of the network (in MW)
     inputs_nw["pTrans_Max"] = to_floats(:Line_Max_Flow_MW) / scale_factor  # convert to GW
 
+    ## NICK EDIT
+    inputs_nw["pTrans_Forward"] = to_floats(:Forward_Flow_MW) / scale_factor  # convert to GW
+    inputs_nw["pTrans_Reverse"] = to_floats(:Reverse_Flow_MW) / scale_factor  # convert to GW
+
     if setup["Trans_Loss_Segments"] == 1
         # Line percentage Loss - valid for case when modeling losses as a fixed percent of absolute value of power flows
         inputs_nw["pPercent_Loss"] = to_floats(:Line_Loss_Percentage)

@@ -50,8 +50,14 @@ function investment_transmission!(EP::Model, inputs::Dict, setup::Dict)
 
     if MultiStage == 1
         @expression(EP, eTransMax[l = 1:L], vTRANSMAX[l])
+        ## NICK EDIT
+        @expression(EP, eTransForward[l=1:L], vTRANSMAX_Forward[l])
+        @expression(EP, eTransReverse[l=1:L], vTRANSMAX_Reverse[l])
     else
         @expression(EP, eTransMax[l = 1:L], inputs["pTrans_Max"][l])
+        ## NICK EDIT
+        @expression(EP, eTransForward[l=1:L], inputs["pTrans_Forward"][l])
+        @expression(EP, eTransReverse[l=1:L], inputs["pTrans_Reverse"][l])
     end
 
     ## Transmission power flow and loss related expressions:
@@ -65,6 +71,9 @@ function investment_transmission!(EP::Model, inputs::Dict, setup::Dict)
             end)
     else
         @expression(EP, eAvail_Trans_Cap[l = 1:L], eTransMax[l]+EP[:vZERO])
+        ## NICK EDIT
+        @expression(EP, eAvailForward_Trans_Cap[l=1:L], eTransForward[l] + EP[:vZERO])
+        @expression(EP, eAvailReverse_Trans_Cap[l=1:L], eTransReverse[l] + EP[:vZERO])
     end
 
     ## Objective Function Expressions ##
@@ -92,6 +101,10 @@ function investment_transmission!(EP::Model, inputs::Dict, setup::Dict)
     if MultiStage == 1
         # Linking constraint for existing transmission capacity
         @constraint(EP, cExistingTransCap[l = 1:L], vTRANSMAX[l]==inputs["pTrans_Max"][l])
+        ## NICK EDIT
+        @constraint(EP, cExistingTransCap_Forward[l=1:L], vTRANSMAX_Forward[l] == inputs["pTrans_Forward"][l])
+        @constraint(EP, cExistingTransCap_Reverse[l=1:L], vTRANSMAX_Reverse[l] == inputs["pTrans_Reverse"][l])
+
     end
 
     # If network expansion is used:
