@@ -112,9 +112,15 @@ function flexible_demand!(EP::Model, inputs::Dict, setup::Dict)
                 # Maximum charging rate
                 [y in FLEX_Z, t = 1:T],
                 EP[:vCHARGE_FLEX][y, t] <= inputs["pP_Max"][y, t] * EP[:eTotalCap][y]
-                # Maximum discharging rate
-                [y in FLEX_Z, t = 1:T],
-                flexible_demand_energy_eff(gen[y]) * EP[:vP][y, t] <= EP[:eTotalCap][y]
+                
+                # Nick's Maximum discharge rate
+                [y in FLEX_Z, t=1:T], 
+                EP[:vP][y,t] <= inputs["pP_Max"][y,t] * EP[:eTotalCap][y]
+
+                # New GenX Maximum discharging rate
+                # [y in FLEX_Z, t = 1:T],
+                # flexible_demand_energy_eff(gen[y]) * EP[:vP][y, t] <= EP[:eTotalCap][y]
+
             end)
         for y in FLEX_Z
 
